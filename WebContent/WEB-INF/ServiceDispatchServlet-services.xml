@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/context  
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!--Hibernate dataSource Setting-->
+	<bean id="dataSource" 
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/> 
+		<property name="url" value="jdbc:mysql://127.0.0.1/shoesbrand"/> 
+		<property name="username" value="hategold"/> 
+		<property name="password" value="hategold@"/> 
+	</bean>
+	
+	<!--Hibernate sessionFactory Setting (inject to dao)-->
+	<bean id="sessionFactory"  
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" destroy-method="destroy">
+		<property name="dataSource"> 
+			<ref bean="dataSource"/> 
+		</property> 
+		<property name="mappingResources"> 
+			<list> 
+				<value>yt/item5/Brand.hbm.xml</value> 
+				<value>yt/item5/Shoes.hbm.xml</value> 
+			</list> 
+		</property> 
+		<property name="hibernateProperties"> 
+			<props> 
+				<prop key="hibernate.dialect"> 
+                    org.hibernate.dialect.MySQLDialect
+				</prop> 
+			</props> 
+		</property> 
+	
+	</bean>
+	<!--Hibernate transaction-->
+	<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="dataSource" ref = "dataSource"/> 
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager" />
+	<!--Hibernate Dao Setting -->
+	<bean id="HibernateGenericDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
+		<property name="sessionFactory"> 
+			<ref bean="sessionFactory"/> 
+		</property> 
+	</bean> 
+	
+	<bean id="brandDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
+		<constructor-arg>
+			<value type="java.lang.Class">yt.item5.bean.Brand</value>
+		</constructor-arg>
+		<property name="sessionFactory"> 
+			<ref bean="sessionFactory"/> 
+		</property> 
+	</bean> 
+	
+	<bean id="shoesDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
+		<constructor-arg>
+			<value type="java.lang.Class">yt.item5.bean.Shoes</value>
+		</constructor-arg>
+		<property name="sessionFactory"> 
+			<ref bean="sessionFactory"/> 
+		</property> 
+	</bean> 
+	
+	<!--Service Setting -->
+	<bean id="shoesService" class="yt.item5.service.ShoesTableService">
+		<property name="genericDao"> 
+			<ref bean="shoesDao"/> 
+		</property> 
+		<property name="brandDao"> 
+			<ref bean="brandDao"/> 
+		</property>
+	</bean>
+	<bean id="brandService" class="yt.item5.service.BrandTableService">
+		<property name="genericDao"> 
+			<ref bean="brandDao"/> 
+		</property> 
+	</bean>
+	<!--POJO Bean Setting -->
+	<bean id="Brand" class="yt.item5.bean.Brand" scope="prototype">
+	</bean>
+	
+	<bean id="Shoes" class="yt.item5.bean.Shoes" scope="prototype">
+	</bean>
+
+
+</beans>
