@@ -46,6 +46,19 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<tx:annotation-driven transaction-manager="txManager" />
+	<!--Transaction AOP Interceptor-->
+	<bean id="txInterceptor" class ="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key = "save">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="sessionInterceptor" class="org.springframework.orm.hibernate5">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 	<!--Hibernate Dao Setting -->
 	<bean id="HibernateGenericDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
 		<property name="sessionFactory"> 
