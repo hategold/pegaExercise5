@@ -5,15 +5,13 @@ import javax.inject.Inject;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Transactional;
 
 import yt.item5.bean.Brand;
 import yt.item5.bean.Shoes;
 import yt.item5.dao.GenericDao;
 
 public class ShoesTableService extends GeneralService<Shoes, Integer> implements ApplicationContextAware {
-
-	@SuppressWarnings("rawtypes")
-	GenericDao brandDao;
 
 	@Inject // or @Autowired
 	private ApplicationContext ctx;
@@ -25,7 +23,8 @@ public class ShoesTableService extends GeneralService<Shoes, Integer> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public Brand buildFkEntity(Integer fkId) {
-		System.out.println(ctx.containsBean("brandDao"));
+		@SuppressWarnings("rawtypes")
+		GenericDao brandDao = (GenericDao) ctx.getBean("brandDao");
 		Brand brand = null;
 		try {
 			brand = (Brand) brandDao.getById(fkId);
@@ -38,7 +37,8 @@ public class ShoesTableService extends GeneralService<Shoes, Integer> implements
 		}
 		return brand;
 	}
-
+	
+	@Transactional
 	@Override
 	public Shoes processUpdate(Shoes shoes, Integer fkId) {
 		Brand brand = buildFkEntity(fkId);
@@ -54,13 +54,6 @@ public class ShoesTableService extends GeneralService<Shoes, Integer> implements
 		return shoes;
 	}
 
-	public GenericDao getBrandDao() {
-		return brandDao;
-	}
-
-	public void setBrandDao(GenericDao brandDao) {
-		this.brandDao = brandDao;
-	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext paramApplicationContext) throws BeansException {

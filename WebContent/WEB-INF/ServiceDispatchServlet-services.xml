@@ -3,12 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop = "http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	http://www.springframework.org/schema/context  
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
 	
 	<!--Hibernate dataSource Setting-->
 	<bean id="dataSource" 
@@ -42,23 +45,36 @@
 	</bean>
 	<!--Hibernate transaction-->
 	<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="dataSource" ref = "dataSource"/> 
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<tx:annotation-driven transaction-manager="txManager" />
+	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
 	<!--Transaction AOP Interceptor-->
-	<bean id="txInterceptor" class ="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="transactionManager" ref="txManager"/>
-		<property name="transactionAttributes">
-			<props>
-				<prop key = "save">PROPAGATION_REQUIRED</prop>
-			</props>
-		</property>
-	</bean>
-	
-	<bean id="sessionInterceptor" class="org.springframework.orm.hibernate5">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
+	<!--<bean id="txInterceptor" class ="org.springframework.transaction.interceptor.TransactionInterceptor">
+			<property name="transactionManager" ref="txManager"/>
+			<property name="transactionAttributes">
+				<props>
+					<prop key = "insert">PROPAGATION_REQUIRED</prop>
+					<prop key = "update">PROPAGATION_REQUIRED</prop>
+				</props>
+			</property>
+		</bean>
+		<bean id = "ServiceDaoProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+			<property name="interceptorNames">
+				<list>
+					<value>txInterceptor</value>
+				</list>
+			</property>
+			<property name="proxyTargetClass">
+				<value>true</value>
+			</property>
+			<property name="beanNames">
+				<list>
+					<value>GeneralService</value>
+					<value>BrandTableService</value>
+					<value>ShoesTableService</value>
+				</list>
+			</property>
+		</bean>-->
 	<!--Hibernate Dao Setting -->
 	<bean id="HibernateGenericDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
 		<property name="sessionFactory"> 
@@ -89,9 +105,9 @@
 		<property name="genericDao"> 
 			<ref bean="shoesDao"/> 
 		</property> 
-		<property name="brandDao"> 
+		<!--<property name="brandDao"> 
 			<ref bean="brandDao"/> 
-		</property>
+		</property>-->
 	</bean>
 	<bean id="brandService" class="yt.item5.service.BrandTableService">
 		<property name="genericDao"> 

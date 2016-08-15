@@ -9,7 +9,7 @@ import yt.item5.dao.GenericDao;
 public abstract class GeneralService<T extends EntityInterface, PK extends Serializable> implements CrudServiceInterface<T, PK> {
 
 	protected GenericDao<T, PK> genericDao;
-
+	
 	@Override
 	public GenericDao<T, PK> getGenericDao() {
 		return genericDao;
