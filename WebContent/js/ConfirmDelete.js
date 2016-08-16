@@ -1,9 +1,8 @@
 $(document).on("click", ".confirm", function(e) {
 	var link = $(this).attr("href");
-	console.log(link)
 	e.preventDefault();
 	bootbox.confirm({
-		title : "ç¢ºèªåˆªé™¤ç´€éŒ„",
+		title : "½T©w­n§R°£³oµ§¬ö¿ı?",
 		message : "Are you sure?",
 		callback : function(result) {
 			if (result) {

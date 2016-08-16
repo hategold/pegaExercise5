@@ -98,4 +98,10 @@ public class Brand implements Serializable, EntityInterface {
 		return this.brandId;
 	}
 
+	@Override
+	public void setForeignClassNull() {
+		setShoesGroup(null);
+
+	}
+
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import com.google.gson.Gson;
 
 import yt.item5.bean.EntityInterface;
 import yt.item5.service.GeneralService;
@@ -23,7 +25,7 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 	public final Class<T> classType;
 
 	protected final String INSERT_OR_EDIT_PAGE;
- 
+
 	protected final String LIST_PAGE;
 
 	protected GeneralService<T, PK> generalService;
@@ -65,7 +67,14 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 	}
 
 	public String dispatchToList(HttpServletRequest request) {
-		request.setAttribute(classType.getSimpleName().toLowerCase() + "List", generalService.findAll());
+		List<T> objList = generalService.findAll();
+		for(T obj : objList){
+			obj.setForeignClassNull();
+		}
+		String json = new Gson().toJson(objList);
+		System.out.println(json);
+		
+		request.setAttribute(classType.getSimpleName().toLowerCase() + "List", objList);
 		return LIST_PAGE;
 	}
 
@@ -82,10 +91,23 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 			response.sendRedirect("/MavenWebExercise5/index.jsp"); // set to main page
 			return;
 		}
+//		responseJson(response,forward);
+		
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
-	protected String excuteAction(String action, HttpServletRequest request) {
+	protected void responseJson(HttpServletResponse response, String json) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try {
+			response.getWriter().write(json);
+		} catch (IOException e) {
+			System.out.print("Failed to send json response");
+			e.printStackTrace();
+		}
+	}
+
+	protected String excuteAction(String action, HttpServletRequest request) {//return json
 		try {
 			switch (ActionEnum.valueOf(action.toUpperCase())) {
 				case DELETE:

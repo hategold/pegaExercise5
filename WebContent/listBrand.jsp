@@ -47,15 +47,16 @@
 								<td><c:out value="${brand.getCountry()}" /></td>
 								<td><a
 									href="BrandTableController.do?action=edit&brandId=<c:out value="${brand.getBrandId() }"/>"><button
-											type="button" class="btn btn-primary">Update</button></a></td>
+											type="button" class="btn btn-primary" name="update">Update</button></a></td>
 
 								<td><a
 									href="BrandTableController.do?action=delete&brandId=<c:out value="${brand.getBrandId() }"/>"
 									class=" confirm"><button type="button"
-											class="btn btn-danger">Delete</button></a></td>
+											class="btn btn-danger delete" name="delete">Delete</button></a></td>
 								<td><a
 									href="ShoesTableController.do?action=list&brandId=<c:out value="${brand.getBrandId() }"/>"><button
-											type="button" class="btn btn-primary">Shoes List</button></a></td>
+											type="button" class="btn btn-primary" name="subObjList">Shoes
+											List</button></a></td>
 
 							</tr>
 						</c:forEach>
@@ -66,11 +67,11 @@
 		<div class="row">
 			<p class="col-md-offset-2">
 				<a href="BrandTableController.do?action=insert"><button
-						type="button" class="btn btn-success">Add Shoes Brands</button></a>
+						type="button" class="btn btn-success" name="create">Add Shoes Brands</button></a>
 			</p>
 		</div>
 	</div>
-	<script type="text/javascript" src="jsLib/ConfirmDelete.js"
+	<script type="text/javascript" src="js/ConfirmDelete.js"
 		charset="utf-8">
 		
 	</script>

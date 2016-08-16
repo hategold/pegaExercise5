@@ -74,7 +74,7 @@
 			</p>
 		</div>
 	</div>
-	<script type="text/javascript" src="jsLib/ConfirmDelete.js"
+	<script type="text/javascript" src="js/ConfirmDelete.js"
 		charset="utf-8">
 		
 	</script>

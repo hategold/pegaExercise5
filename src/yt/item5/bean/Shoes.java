@@ -95,4 +95,10 @@ public class Shoes implements Serializable, EntityInterface {
 		return shoesId + " " + shoesName + " " + series + " " + price + " " + brand;
 
 	}
+
+	@Override
+	public void setForeignClassNull() {
+		setBrand(null);
+
+	}
 }
