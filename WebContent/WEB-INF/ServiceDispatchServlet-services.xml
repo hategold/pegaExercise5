@@ -87,7 +87,7 @@
 	</tx:advice>
 	<aop:config>
 		<aop:pointcut id="pointCUD" expression="execution(* yt.item5.service.*.*(..))"/>
-		<aop:advisor pointcut-ref="pointCUD" advice-ref="txAdvice"/>
+		<aop:advisor pointcut-ref="pointCUD" advice-ref="txAdvice" order= "1"/>
 	</aop:config>
 	<!--Hibernate Dao Setting -->
 	<bean id="HibernateGenericDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
