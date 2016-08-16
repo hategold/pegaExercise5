@@ -2,6 +2,7 @@ package yt.item5.service;
 
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import yt.item5.bean.EntityInterface;
 import yt.item5.dao.GenericDao;
@@ -9,7 +10,7 @@ import yt.item5.dao.GenericDao;
 public abstract class GeneralService<T extends EntityInterface, PK extends Serializable> implements CrudServiceInterface<T, PK> {
 
 	protected GenericDao<T, PK> genericDao;
-	
+
 	@Override
 	public GenericDao<T, PK> getGenericDao() {
 		return genericDao;
@@ -42,6 +43,7 @@ public abstract class GeneralService<T extends EntityInterface, PK extends Seria
 
 	}
 
+	@Transactional
 	@Override
 	public void update(T entity) {
 		genericDao.update(entity);

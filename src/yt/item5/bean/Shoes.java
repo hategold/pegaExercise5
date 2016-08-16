@@ -92,7 +92,7 @@ public class Shoes implements Serializable, EntityInterface {
 
 	@Override
 	public String toString() {
-		return shoesId + " " + shoesName + " " + price + " " + brand;
+		return shoesId + " " + shoesName + " " + series + " " + price + " " + brand;
 
 	}
 }

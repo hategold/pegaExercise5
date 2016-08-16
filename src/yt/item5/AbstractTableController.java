@@ -2,6 +2,8 @@ package yt.item5;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,16 +28,41 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 
 	protected GeneralService<T, PK> generalService;
 
-	public AbstractTableController(String listPage, String editPage, Class<T> classType) {
-		this.INSERT_OR_EDIT_PAGE = editPage;
-		this.LIST_PAGE = listPage;
-		this.classType = classType;
-
+	@SuppressWarnings("unchecked")
+	public AbstractTableController() {
+		this.classType = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.INSERT_OR_EDIT_PAGE = "/modify" + classType.getSimpleName() + ".jsp";
+		this.LIST_PAGE = "/list" + classType.getSimpleName() + ".jsp";
 	}
 
 	public abstract PK parsePkFromReq(HttpServletRequest request);
 
-	public abstract T buildEntityByReq(HttpServletRequest request);
+	public T buildEntityByReq(HttpServletRequest request) {
+		T entity = null;
+		try {
+			entity = classType.newInstance();
+		} catch (InstantiationException | IllegalAccessException e1) {
+			e1.printStackTrace();
+		}
+		Field[] fields = classType.getDeclaredFields();
+
+		for (Field field : fields) {
+			try {
+				if (field.getType().equals(String.class)) {//TODO stringUtils?
+					field.setAccessible(true);
+					field.set(entity, request.getParameter(field.getName()));
+				} else if (field.getType().equals(int.class)) {
+					field.setAccessible(true);
+					field.set(entity, Integer.valueOf(request.getParameter(field.getName())));
+				}
+
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+				System.out.println(field.getName());
+			}
+		}
+		return entity;
+	}
 
 	public String dispatchToList(HttpServletRequest request) {
 		request.setAttribute(classType.getSimpleName().toLowerCase() + "List", generalService.findAll());

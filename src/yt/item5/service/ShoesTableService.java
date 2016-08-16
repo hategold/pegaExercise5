@@ -37,23 +37,25 @@ public class ShoesTableService extends GeneralService<Shoes, Integer> implements
 		}
 		return brand;
 	}
-	
+
 	@Transactional
 	@Override
 	public Shoes processUpdate(Shoes shoes, Integer fkId) {
 		Brand brand = buildFkEntity(fkId);
 
-		System.out.println(brand);
-
-		if (brand == null)
+		if (brand == null && shoes == null)
 			return null;
+
 		if (shoes == null)
 			return shoes = new Shoes().setBrand(brand);
-		if (shoes != null && !isShoesMapToBrand(shoes, brand))
+		
+//		if (brand == null)
+//			brand = shoes.getBrand();
+
+		if (!isShoesMapToBrand(shoes, brand))
 			return null;
 		return shoes;
 	}
-
 
 	@Override
 	public void setApplicationContext(ApplicationContext paramApplicationContext) throws BeansException {

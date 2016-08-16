@@ -20,10 +20,6 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 
 	public static final String INSERT_OR_EDIT = "/modifyShoes.jsp";
 
-	public ShoesTableController() {
-		super(LIST_SHOESS, INSERT_OR_EDIT, Shoes.class);
-	}
-
 	@Override
 	public Integer parsePkFromReq(HttpServletRequest request) {
 		return checkString2Int(request.getParameter("shoesId"));
@@ -31,10 +27,8 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 
 	@Override
 	public Shoes buildEntityByReq(HttpServletRequest request) {
-		Shoes shoes = new Shoes(request.getParameter("shoesName"));
-		shoes.setShoesId(parsePkFromReq(request)).setCategory(request.getParameter("category")).setPrice(Integer.valueOf(request.getParameter("price")))
-				.setSeries(request.getParameter("series")).setBrand(generalService.buildFkEntity(Integer.valueOf(request.getParameter("brandId"))));
-		return shoes;
+		return super.buildEntityByReq(request).setBrand(generalService.buildFkEntity(Integer.valueOf(request.getParameter("brandId"))));
+
 	}
 
 	@Override
@@ -48,7 +42,7 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 	}
 
 	@Override
-	public String dispatchToList(HttpServletRequest request) {
+	public String dispatchToList(HttpServletRequest request) {//§ï¯Â²îrequest?
 		Brand brand = generalService.buildFkEntity(Integer.valueOf(request.getParameter("brandId")));
 		if (brand == null)
 			return null;

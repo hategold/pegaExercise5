@@ -47,7 +47,7 @@
 	<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" order= "2"/>
 	<!--Transaction AOP Interceptor-->
 	<!--<bean id="txInterceptor" class ="org.springframework.transaction.interceptor.TransactionInterceptor">
 			<property name="transactionManager" ref="txManager"/>
@@ -55,6 +55,7 @@
 				<props>
 					<prop key = "insert">PROPAGATION_REQUIRED</prop>
 					<prop key = "update">PROPAGATION_REQUIRED</prop>
+					<prop key = "delete*">PROPAGATION_REQUIRED</prop>
 				</props>
 			</property>
 		</bean>
@@ -75,6 +76,19 @@
 				</list>
 			</property>
 		</bean>-->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="insert*"/>
+			<tx:method name="delete*"/>
+			<tx:method name="update*"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="pointCUD" expression="execution(* yt.item5.service.*.*(..))"/>
+		<aop:advisor pointcut-ref="pointCUD" advice-ref="txAdvice"/>
+	</aop:config>
 	<!--Hibernate Dao Setting -->
 	<bean id="HibernateGenericDao" class="yt.item5.dao.HibernateGenericDaoImpl"> 
 		<property name="sessionFactory"> 
@@ -106,8 +120,8 @@
 			<ref bean="shoesDao"/> 
 		</property> 
 		<!--<property name="brandDao"> 
-			<ref bean="brandDao"/> 
-		</property>-->
+				<ref bean="brandDao"/> 
+			</property>-->
 	</bean>
 	<bean id="brandService" class="yt.item5.service.BrandTableService">
 		<property name="genericDao"> 

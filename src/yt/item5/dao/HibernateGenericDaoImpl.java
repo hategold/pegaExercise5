@@ -22,8 +22,8 @@ public class HibernateGenericDaoImpl<T, PK extends Serializable> extends Hiberna
 		T selectedEntity = getHibernateTemplate().get(entityType, Id);
 		return selectedEntity;
 	}
-
-	@Transactional
+	
+//	@Transactional
 	@Override
 	public boolean deleteById(PK Id) {
 		try {
@@ -48,7 +48,7 @@ public class HibernateGenericDaoImpl<T, PK extends Serializable> extends Hiberna
 		return true;
 	}
 
-	@Transactional
+//	@Transactional
 	@Override
 	public boolean update(T t) {
 		System.out.println(t);
