@@ -23,7 +23,7 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 	public final Class<T> classType;
 
 	protected final String INSERT_OR_EDIT_PAGE;
-
+ 
 	protected final String LIST_PAGE;
 
 	protected GeneralService<T, PK> generalService;
