@@ -35,14 +35,14 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 	public String dispatchToUpdate(HttpServletRequest request, Shoes shoes) {
 		shoes = generalService.processUpdate(shoes, Integer.valueOf(request.getParameter("brandId")));
 		if (shoes == null)
-			return dispatchToList(request);
+			return jsonDataList(request);
 
 		request.setAttribute("brand", shoes.getBrand());
 		return super.dispatchToUpdate(request, shoes);
 	}
 
-	@Override
-	public String dispatchToList(HttpServletRequest request) {//§ï¯Â²îrequest?
+//	@Override
+	public String jsonDataList(HttpServletRequest request) {
 		Brand brand = generalService.buildFkEntity(Integer.valueOf(request.getParameter("brandId")));
 		if (brand == null)
 			return null;

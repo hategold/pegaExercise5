@@ -66,16 +66,14 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		return entity;
 	}
 
-	public String dispatchToList(HttpServletRequest request) {
+	public String buildJsonDataList() {
 		List<T> objList = generalService.findAll();
-		for(T obj : objList){
+		for (T obj : objList) {
 			obj.setForeignClassNull();
 		}
 		String json = new Gson().toJson(objList);
 		System.out.println(json);
-		
-		request.setAttribute(classType.getSimpleName().toLowerCase() + "List", objList);
-		return LIST_PAGE;
+		return json;
 	}
 
 	public String dispatchToUpdate(HttpServletRequest request, T entity) {
@@ -87,16 +85,18 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		initGeneralService();
 		String forward = excuteAction(request.getParameter("action"), request);
-		if (null == forward) {
+		if (forward == null) {
 			response.sendRedirect("/MavenWebExercise5/index.jsp"); // set to main page
 			return;
 		}
-//		responseJson(response,forward);
-		
-		request.getRequestDispatcher(forward).forward(request, response);
+		if (forward == LIST_PAGE)
+			request.getRequestDispatcher(forward).forward(request, response);
+		else
+			responseJson(response, forward);
 	}
 
 	protected void responseJson(HttpServletResponse response, String json) {
+		System.out.print("Start Json");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		try {
@@ -112,24 +112,26 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 			switch (ActionEnum.valueOf(action.toUpperCase())) {
 				case DELETE:
 					generalService.deleteById(parsePkFromReq(request));
-					return dispatchToList(request);
+					return buildJsonDataList();
 				case EDIT:
 
 					T entity = generalService.getById(parsePkFromReq(request));
 
 					if (entity == null) //got no data
-						return dispatchToList(request);
+						return buildJsonDataList();
 
 					return dispatchToUpdate(request, entity);
 				case INSERT:
 					return dispatchToUpdate(request, null);
+				case INDEX:
+					return LIST_PAGE;
 				default:
 					break;
 			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		return dispatchToList(request);
+		return buildJsonDataList();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

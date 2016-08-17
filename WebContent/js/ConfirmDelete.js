@@ -2,7 +2,7 @@ $(document).on("click", ".confirm", function(e) {
 	var link = $(this).attr("href");
 	e.preventDefault();
 	bootbox.confirm({
-		title : "½T©w­n§R°£³oµ§¬ö¿ı?",
+		title : "ç¢ºèªè¦åˆªé™¤?",
 		message : "Are you sure?",
 		callback : function(result) {
 			if (result) {

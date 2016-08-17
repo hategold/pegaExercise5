@@ -27,7 +27,7 @@
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="brandTable">
 					<caption>ShoesBrands</caption>
 					<thead>
 						<tr>
@@ -39,7 +39,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${brandList}" var="brand">
+						<!--<c:forEach items="${brandList}" var="brand">
 							<tr>
 								<td><c:out value="${brand.getBrandId()}" /></td>
 								<td><c:out value="${brand.getBrandName()}" /></td>
@@ -59,7 +59,7 @@
 											List</button></a></td>
 
 							</tr>
-						</c:forEach>
+						</c:forEach>-->
 					</tbody>
 				</table>
 			</div>
@@ -67,14 +67,17 @@
 		<div class="row">
 			<p class="col-md-offset-2">
 				<a href="BrandTableController.do?action=insert"><button
-						type="button" class="btn btn-success" name="create">Add Shoes Brands</button></a>
+						type="button" class="btn btn-success" name="create">Add
+						Shoes Brands</button></a>
 			</p>
 		</div>
 	</div>
 	<script type="text/javascript" src="js/ConfirmDelete.js"
-		charset="utf-8">
-		
-	</script>
+		charset="utf-8"></script>
+	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
+	<script type="text/javascript" src="js/AjaxController.js"></script>
+	<script type="text/javascript" src="js/DomBuilder.js"></script>
+
 
 </body>
 </html>
