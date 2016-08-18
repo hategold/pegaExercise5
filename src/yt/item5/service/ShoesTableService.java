@@ -13,7 +13,7 @@ import yt.item5.dao.GenericDao;
 
 public class ShoesTableService extends GeneralService<Shoes, Integer> implements ApplicationContextAware {
 
-	@Inject // or @Autowired
+//	@Inject // or @Autowired
 	private ApplicationContext ctx;
 
 	private boolean isShoesMapToBrand(Shoes shoes, Brand brand) {
