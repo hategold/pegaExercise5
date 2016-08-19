@@ -25,7 +25,8 @@ public abstract class GeneralService<T extends EntityInterface, PK extends Seria
 	public List<T> findAll() {
 		return genericDao.findAll();
 	}
-
+	
+//	@Transactional
 	@Override
 	public void deleteById(PK Id) {
 		genericDao.deleteById(Id);
@@ -36,7 +37,7 @@ public abstract class GeneralService<T extends EntityInterface, PK extends Seria
 	public T getById(PK Id) {
 		return genericDao.getById(Id);
 	}
-
+	@Transactional
 	@Override
 	public void insert(T entity) {
 		genericDao.insert(entity);

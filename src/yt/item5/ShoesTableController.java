@@ -16,15 +16,6 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String LIST_SHOESS = "/listShoes.jsp";
-
-	public static final String INSERT_OR_EDIT = "/modifyShoes.jsp";
-
-	@Override
-	public Integer parsePkFromReq(HttpServletRequest request) {
-		return checkString2Int(request.getParameter("shoesId"));
-	}
-
 	@Override
 	public Shoes buildEntityByReq(HttpServletRequest request) {
 		return super.buildEntityByReq(request).setBrand(generalService.buildFkEntity(Integer.valueOf(request.getParameter("brandId"))));
@@ -48,7 +39,7 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 			return null;
 		request.setAttribute("brand", brand);
 		request.setAttribute("shoesList", generalService.findByCondition("brandId =" + String.valueOf(brand.getBrandId())));
-		return LIST_SHOESS;
+		return LIST_PAGE;
 	}
 
 	@Override

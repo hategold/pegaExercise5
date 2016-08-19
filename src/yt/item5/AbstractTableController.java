@@ -35,7 +35,10 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		this.LIST_PAGE = "/list" + classType.getSimpleName() + ".jsp";
 	}
 
-	public abstract PK parsePkFromReq(HttpServletRequest request);
+	@SuppressWarnings("unchecked")
+	public PK parsePkFromReq(HttpServletRequest request) {
+		return (PK) Integer.valueOf(checkString2Int(request.getParameter(classType.getSimpleName().toLowerCase() + "Id")));
+	}
 
 	public T buildEntityByReq(HttpServletRequest request) {
 		T entity = null;

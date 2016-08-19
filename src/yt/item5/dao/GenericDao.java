@@ -3,7 +3,10 @@ package yt.item5.dao;
 import java.io.Serializable;
 import java.util.List;
 
-public interface GenericDao<T, PK extends Serializable> {
+import yt.item5.bean.EntityInterface;
+
+public interface GenericDao<T extends EntityInterface, PK extends Serializable> {
+
 	public T getById(PK Id);
 
 	public boolean deleteById(PK Id);
@@ -17,6 +20,5 @@ public interface GenericDao<T, PK extends Serializable> {
 	public List<T> findAll();
 
 	public List<T> findByCondition(String s);
-
 
 }

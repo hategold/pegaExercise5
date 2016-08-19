@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 
-public class HibernateGenericDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
+import yt.item5.bean.EntityInterface;
+
+public class HibernateGenericDaoImpl<T extends EntityInterface, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
 
 	private Class<T> entityType;
 
@@ -22,7 +24,7 @@ public class HibernateGenericDaoImpl<T, PK extends Serializable> extends Hiberna
 		T selectedEntity = getHibernateTemplate().get(entityType, Id);
 		return selectedEntity;
 	}
-	
+
 //	@Transactional
 	@Override
 	public boolean deleteById(PK Id) {
@@ -36,7 +38,7 @@ public class HibernateGenericDaoImpl<T, PK extends Serializable> extends Hiberna
 		return true;
 	}
 
-	@Transactional
+//	@Transactional
 	@Override
 	public boolean delete(T t) {
 		try {
@@ -56,7 +58,7 @@ public class HibernateGenericDaoImpl<T, PK extends Serializable> extends Hiberna
 		return true;
 	}
 
-	@Transactional
+//	@Transactional
 	@Override
 	public boolean insert(T t) {
 		getHibernateTemplate().save(t);
