@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page import="yt.item5.CountryCode"%>
+<%@page import="yt.item5.factory.CountryMapFactory"%>
+<%@page import="java.util.Map"%>
+<%
+	final String COUNTRY_CODE_FILE = "countryCodeToFullName";
+	Map<CountryCode, String> countryCodeMap = (new CountryMapFactory()).createCountryMap(COUNTRY_CODE_FILE);
+	request.setAttribute("countryCodeMap", countryCodeMap);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!-- 新增判斷，避免直接存取listbrand -->
 <html>
@@ -31,10 +39,10 @@
 					<caption>ShoesBrands</caption>
 					<thead>
 						<tr>
-							<th>BrandId</th>
-							<th>BrandName</th>
-							<th>Website</th>
-							<th>Country</th>
+							<th><div colType="textInput readOnly" colName = "brandId">BrandId</div></th>
+							<th><div colType="textInput" colName = "brandName">BrandName</div></th>
+							<th><div colType="textInput" colName = "website">Website</div></th>
+							<th><div colType="select" colName = "country" >Country</div></th>
 							<th colspan="3">Action</th>
 						</tr>
 					</thead>

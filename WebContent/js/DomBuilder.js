@@ -3,13 +3,13 @@ var domBuilder = {
 	tableName : "",
 	tableAttributeName : [],
 	tableServlet : "",
-	buildTable : function(responseJson) {
+	buildTableByAjax : function(responseJson) {
 		var tableName = this.tableName;
 		var tableAttributeName = this.tableAttributeName;
 		var tableServlet = this.tableServlet;
 		$.each(responseJson, function(index, record) {
 
-					$("#" + tableName + " tr:last").after("<tr></tr>")
+					$("#" + tableName + " tr:last").after("<tr></tr>");
 					var i;
 					for (i = 0; i < tableAttributeName.length; i++) {
 						$("#" + tableName + " tr:last").append("<td>"
@@ -26,7 +26,10 @@ var domBuilder = {
 									+ record[tableAttributeName[0]])
 				})
 	},
-	createRecord : function() {
+	createNewRow : function(rowMap, tableName) {
+		$("#" + tableName + " tr:last").after("<tr></tr>");
+		rowMap.forEach(function() {
+				});
 	}
 }
 
@@ -43,3 +46,6 @@ function appendUpdate(element, url) {
 					+ url
 					+ '><button type="button" class="btn btn-primary" name="update">Update</button></a></td>')
 }
+
+var inputOkButton = '<td><button type="button" class="btn btn-default inputOk" name="inputOk">OK</button></td>';
+var inputCancelButton = '<td><button type="button" class="btn btn-primary inputCancel" name="inputCancel">Cancel</button></td>';

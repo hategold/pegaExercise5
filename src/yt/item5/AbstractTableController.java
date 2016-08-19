@@ -75,6 +75,16 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		System.out.println(json);
 		return json;
 	}
+	
+	public String buildJsonColInfo(T entity) {
+		List<T> objList = generalService.findAll();
+		for (T obj : objList) {
+			obj.setForeignClassNull();
+		}
+		String json = new Gson().toJson(objList);
+		System.out.println(json);
+		return json;
+	}
 
 	public String dispatchToUpdate(HttpServletRequest request, T entity) {
 		if (entity != null)
