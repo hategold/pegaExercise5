@@ -28,7 +28,10 @@ var domBuilder = {
 	},
 	createNewRow : function(rowMap, tableName) {
 		$("#" + tableName + " tr:last").after("<tr></tr>");
-		rowMap.forEach(function() {
+		rowMap.forEach(function(item, key) {
+					$("#" + tableName + " tr:last").append("<td><input type=\""
+							+ type + "\" name = \"" + name + "\" " + otherTag
+							+ ">" + record[tableAttributeName[i]] + "</td>");
 				});
 	}
 }

@@ -39,10 +39,10 @@
 					<caption>ShoesBrands</caption>
 					<thead>
 						<tr>
-							<th><div colType="textInput readOnly" colName = "brandId">BrandId</div></th>
-							<th><div colType="textInput" colName = "brandName">BrandName</div></th>
-							<th><div colType="textInput" colName = "website">Website</div></th>
-							<th><div colType="select" colName = "country" >Country</div></th>
+							<th><div colType="textInput readonly" colName="brandId">BrandId</div></th>
+							<th><div colType="textInput required" colName="brandName">BrandName</div></th>
+							<th><div colType="textInput" colName="website">Website</div></th>
+							<th><div colType="select" colName="country">Country</div></th>
 							<th colspan="3">Action</th>
 						</tr>
 					</thead>
