@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import yt.item5.bean.EntityInterface;
 import yt.item5.service.GeneralService;
@@ -38,6 +39,63 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 	}
 
 	public abstract PK parsePkFromReq(HttpServletRequest request);
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		initGeneralService();
+		String forward = excuteAction(request.getParameter("action"), request);
+		if (forward == null) {
+			response.sendRedirect("/MavenWebExercise5/index.jsp"); // set to main page
+			return;
+		}
+		if (forward == LIST_PAGE)
+			request.getRequestDispatcher(forward).forward(request, response);
+		else
+			responseJson(response, forward);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		initGeneralService();
+		JsonObject jsonData = new Gson().fromJson(request.getReader(), JsonObject.class);
+		System.out.println(jsonData);
+
+		T entity = buildEntityByJson(jsonData);
+
+		if (isCreate(entity.getId())) {
+			generalService.insert(entity);
+		} else {
+			generalService.update(entity);
+		}
+
+		entity.setForeignClassNull();
+		responseJson(response, new Gson().toJson(entity));
+	}
+
+	public T buildEntityByJson(JsonObject jsonData) {
+		T entity = null;
+		try {
+			entity = classType.newInstance();
+		} catch (InstantiationException | IllegalAccessException e1) {
+			e1.printStackTrace();
+		}
+		Field[] fields = classType.getDeclaredFields();
+
+		for (Field field : fields) {
+			try {
+				if (field.getType().equals(String.class)) {//TODO stringUtils?
+					field.setAccessible(true);
+					field.set(entity, jsonData.get(field.getName()).getAsString());
+				} else if (field.getType().equals(int.class)) {
+					field.setAccessible(true);
+					field.set(entity, checkString2Int(jsonData.get(field.getName()).getAsString()));
+				}
+
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+				System.out.println(field.getName());
+			}
+		}
+		return entity;
+	}
 
 	public T buildEntityByReq(HttpServletRequest request) {
 		T entity = null;
@@ -71,19 +129,7 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		for (T obj : objList) {
 			obj.setForeignClassNull();
 		}
-		String json = new Gson().toJson(objList);
-		System.out.println(json);
-		return json;
-	}
-	
-	public String buildJsonColInfo(T entity) {
-		List<T> objList = generalService.findAll();
-		for (T obj : objList) {
-			obj.setForeignClassNull();
-		}
-		String json = new Gson().toJson(objList);
-		System.out.println(json);
-		return json;
+		return new Gson().toJson(objList);
 	}
 
 	public String dispatchToUpdate(HttpServletRequest request, T entity) {
@@ -92,21 +138,7 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		return INSERT_OR_EDIT_PAGE;
 	};
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		initGeneralService();
-		String forward = excuteAction(request.getParameter("action"), request);
-		if (forward == null) {
-			response.sendRedirect("/MavenWebExercise5/index.jsp"); // set to main page
-			return;
-		}
-		if (forward == LIST_PAGE)
-			request.getRequestDispatcher(forward).forward(request, response);
-		else
-			responseJson(response, forward);
-	}
-
 	protected void responseJson(HttpServletResponse response, String json) {
-		System.out.print("Start Json");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		try {
@@ -142,21 +174,6 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 			e.printStackTrace();
 		}
 		return buildJsonDataList();
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		initGeneralService();
-
-		T entity = buildEntityByReq(request);
-
-		if (isCreate(entity.getId())) {
-			generalService.insert(entity);
-			response.sendRedirect(buildListUrl(request)); //end post
-			return;
-		}
-
-		generalService.update(entity);
-		response.sendRedirect(buildListUrl(request));
 	}
 
 	public String buildListUrl(HttpServletRequest request) throws IOException {

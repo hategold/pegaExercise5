@@ -1,16 +1,21 @@
 var ajaxUtil = {
 	name : "ajaxUtil",
-	makeAjaxRequest : function(url, requestData, callbackEntity, callbackFunction) {
+	makeAjaxRequest : function(url, requestData, callbackEntity,
+			callbackFunction, type, errorCallback) {
 		var responseJson
 		$.ajax({
 					url : url,
+					type : type,
 					data : requestData,
 					success : function(response) {
 						callbackEntity.callback = callbackFunction;
 						callbackEntity.callback(response);
 					},
-					error : null
+					error : function(response) {
+						callbackEntity.errorCallback;
+					},
+					contentType : "application/json; charset=utf-8"
 
 				})
 	}
-}
+}// different => get, post ,json ajax method
