@@ -1,32 +1,41 @@
-pageVariable = {};
+pageVariable = {};// global value similar to cookie
 var domBuilder = {
 	name : "domBuilder",
 	tableName : "",
 	tableAttributeName : [],
 	tableServlet : "",
+	superEntityString : "",
+	superEntityParm : {},
 	buildTableByAjax : function(responseJson) {
-		var tableName = this.tableName;
-		var tableAttributeName = this.tableAttributeName;
-		var tableServlet = this.tableServlet;
-		$("#" + tableName + " tbody").children().replaceWith("");
+		console.log('ajax ~~~~');
+		var that = this;
+		var tAttr = this.tableAttributeName;
+		var tName = this.tableName;
+		var tBodySelector = $("#" + tName + " tbody");
+		tBodySelector.children().replaceWith("");
 		$.each(responseJson, function(index, record) {
 
-					$("#" + tableName + " tbody").append($("<tr>").attr("id",
-							record[tableAttributeName[0]]));
+					tBodySelector
+							.append($("<tr>").attr("id", record[tAttr[0]]));
+					var trLastSelector = $("#" + tName + " tr:last");
 					var i;
-					for (i = 0; i < tableAttributeName.length; i++) {
-						$("#" + tableName + " tr:last").append("<td>"
-								+ record[tableAttributeName[i]] + "</td>")
+					for (i = 0; i < tAttr.length; i++) {
+						trLastSelector.append("<td>" + record[tAttr[i]]
+								+ "</td>")
 
 					}
-					appendUpdate($("#" + tableName + " tr:last"), tableServlet
-									+ '.do?action=edit&'
-									+ tableAttributeName[0] + '='
-									+ record[tableAttributeName[0]])
-					appendDelete($("#" + tableName + " tr:last"), tableServlet
-									+ '.do?action=delete&'
-									+ tableAttributeName[0] + '='
-									+ record[tableAttributeName[0]])
+					appendUpdate(trLastSelector, that.tableServlet
+									+ '.do?action=edit&' + tAttr[0] + '='
+									+ record[tAttr[0]] + '&'
+									+ that.superEntityString);
+					appendDelete(trLastSelector, that.tableServlet
+									+ '.do?action=delete&' + tAttr[0] + '='
+									+ record[tAttr[0]] + '&'
+									+ that.superEntityString);
+					if (!that.superEntityString) {
+						appendSubTableBtn(trLastSelector, tAttr[0],
+								record[tAttr[0]]);
+					}
 				})
 	},
 	createNewRowForm : function(rowMap, tableName) {
@@ -37,6 +46,7 @@ var domBuilder = {
 					targetTr.append("<td><" + item.tag
 							+ (item.type ? " type=\"" + item.type + "\"" : "")
 							+ " name = \"" + key + "\" "
+							+ "class=\"form-control\" "
 							+ (item.otherAttribute ? item.otherAttribute : "")
 							+ ">" + "</td>");
 					if (item.tag == "select") {
@@ -65,7 +75,8 @@ var domBuilder = {
 			var item = rowMap.get(key);
 			var tmpTd = $("<td>");
 			var tmpTag = $("<" + item.tag + ">");
-			tmpTag.attr("type", item.input).attr("name", key).appendTo(tmpTd);
+			tmpTag.attr("type", item.input).attr("name", key).attr("class",
+					"form-control").appendTo(tmpTd);
 
 			item.otherAttribute ? tmpTag.prop(item.otherAttribute, true) : "";
 
@@ -92,10 +103,26 @@ var domBuilder = {
 	},
 	formToEntity : function(selector, responseJson) {
 		var thisTr = $("<tr>");
+		var id = responseJson[this.tableAttributeName[0]];
+
 		this.tableAttributeName.forEach(function(element) {
 					$("<td>").text(responseJson[element]).appendTo(thisTr);
 				});
-		thisTr.attr('id', responseJson[this.tableAttributeName[0]]);
+		$('#' + id).remove();
+		thisTr.attr('id', id);
+		appendUpdate(thisTr, this.tableServlet + '.do?action=edit&'
+						+ this.tableAttributeName[0] + '='
+						+ responseJson[this.tableAttributeName[0]] + '&'
+						+ this.superEntityString)
+		appendDelete(thisTr, this.tableServlet + '.do?action=delete&'
+						+ this.tableAttributeName[0] + '='
+						+ responseJson[this.tableAttributeName[0]] + '&'
+						+ this.superEntityString)
+		if (!this.superEntityString) {
+			appendSubTableBtn(thisTr, this.tableAttributeName[0],
+					responseJson[this.tableAttributeName[0]]);
+		}
+
 		selector.replaceWith(thisTr);
 	},
 	deleteRowForm : function(selector) {
@@ -103,6 +130,12 @@ var domBuilder = {
 	},
 	checkThis : function() {
 		return (this);
+	},
+	initSuperEntityString : function() {
+		this.superEntityString = decodeURIComponent(window.location.search
+				.substring(1));
+		this.superEntityParm['idName'] = this.superEntityString.split('=')[0];
+		this.superEntityParm['idValue'] = this.superEntityString.split('=')[1];
 	}
 }
 
@@ -124,8 +157,10 @@ function setOptionsByJson(jsonMap, selector) {
 	$.each(jsonMap, function(key, value) {
 				$("<option>").val(key).text(value).appendTo(selector);
 			});
-	selector.val(selector.value);// Ajax load Async, so save in value earlier
-	// and then save to val()
+	if (selector.value) {
+		selector.val(selector.value);// Ajax load Async, so save in value
+		// earlier
+	}// and then save to val()
 }
 
 function appendDelete(element, url) {
@@ -142,7 +177,12 @@ function appendUpdate(element, url) {
 					+ '><button type="button" class="btn btn-primary" name="update">Update</button></a></td>')
 }
 
-function deleteSelectedRow() {
+function appendSubTableBtn(element, idName, idValue) {
+	$('<td>')
+			.append($('<a>')
+					.attr('href', 'listShoes.jsp?' + idName + '=' + idValue)
+					.append('<button type="button" class="btn btn-primary" name="ShoesList">ShoesList</button>'))
+			.appendTo(element);
 }
 
 var inputOkButton = '<td><button type="button" class="btn btn-primary inputOk" name="inputOk" type="submit">OK</button></td>';

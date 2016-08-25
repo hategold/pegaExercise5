@@ -8,6 +8,7 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css" />
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -27,10 +28,12 @@
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<table class="table table-bordered" id="brandTable">
+				<table class="table table-bordered" id="brandTable"
+					servlet="BrandTableController">
 					<caption>ShoesBrands</caption>
 					<thead>
 						<tr>
+							<!-- colTag & otherAttribute is label for js dom control. -->
 							<th><div colTag="input" colType="text" colName="brandId"
 									otherAttribute="readonly">BrandId</div></th>
 							<th><div colTag="input" colType="text" colName="brandName"
@@ -41,45 +44,33 @@
 						</tr>
 					</thead>
 					<tbody>
-						<!--<c:forEach items="${brandList}" var="brand">
-							<tr>
-								<td><c:out value="${brand.getBrandId()}" /></td>
-								<td><c:out value="${brand.getBrandName()}" /></td>
-								<td><c:out value="${brand.getWebsite()}" /></td>
-								<td><c:out value="${brand.getCountry()}" /></td>
-								<td><a
-									href="BrandTableController.do?action=edit&brandId=<c:out value="${brand.getBrandId() }"/>"><button
-											type="button" class="btn btn-primary" name="update">Update</button></a></td>
-
-								<td><a
-									href="BrandTableController.do?action=delete&brandId=<c:out value="${brand.getBrandId() }"/>"
-									class=" confirm"><button type="button"
-											class="btn btn-danger delete" name="delete">Delete</button></a></td>
-								<td><a
+						<!-- insert Js table 
+					<td><a
 									href="ShoesTableController.do?action=list&brandId=<c:out value="${brand.getBrandId() }"/>"><button
-											type="button" class="btn btn-primary" name="subObjList">Shoes
-											List</button></a></td>
-
-							</tr>
-						</c:forEach>-->
+											type="button" class="btn btn-primary">Shoes List</button></a></td>
+					
+					-->
 					</tbody>
 				</table>
 			</div>
 		</div>
 		<div class="row">
 			<p class="col-md-offset-2">
-				<a href="BrandTableController.do?action=insert"><button
+				<button type="button" class="btn btn-success" name="create">Add
+					Shoes Brands</button>
+				<!--  
+						<a href="BrandTableController.do?action=insert"><button
 						type="button" class="btn btn-success" name="create">Add
-						Shoes Brands</button></a>
+						Shoes Brands</button></a>-->
 			</p>
 		</div>
 	</div>
-	<script type="text/javascript" src="js/ConfirmDelete.js"
-		charset="utf-8"></script>
+
 	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
 	<script type="text/javascript" src="js/AjaxController.js"></script>
 	<script type="text/javascript" src="js/DomBuilder.js"></script>
 
 
 </body>
+
 </html>

@@ -4,8 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+	crossorigin="anonymous"></script>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css" />
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -23,50 +24,39 @@
 		</div>
 		<div class="row">
 			<div class="col-md-3 col-md-offset-2">
-				<h3>${brand.getBrandId()}:${brand.getBrandName()}</h3>
+				<h3>ShoesTable</h3>
+				<!-- ${brand.getBrandId()}:${brand.getBrandName()} -->
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="shoesTable"
+					servlet="ShoesTableController">
 					<thead>
 						<tr>
-							<th>ShoesId</th>
-							<th>ShoesName</th>
-							<th>Series</th>
-							<th>Category</th>
-							<th>Price</th>
+							<th><div colTag="input" colType="text" colName="shoesId"
+									otherAttribute="readonly">ShoesId</div></th>
+							<th><div colTag="input" colType="text" colName="shoesName"
+									otherAttribute="required">ShoesName</div></th>
+							<th><div colTag="input" colType="text" colName="series">Series</div></th>
+							<th><div colTag="input" colType="text" colName="category">Category</div></th>
+							<th><div colTag="input" colType="number" colName="price">Price</div></th>
 							<th colspan="2">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${shoesList}" var="shoes">
-							<tr>
-								<td><c:out value="${shoes.getShoesId()}" /></td>
-								<td><c:out value="${shoes.getShoesName()}" /></td>
-								<td><c:out value="${shoes.getSeries()}" /></td>
-								<td><c:out value="${shoes.getCategory()}" /></td>
-								<td><c:out value="${shoes.getPrice()}" /></td>
-								<td><a
-									href="ShoesTableController.do?action=edit&shoesId=<c:out value="${shoes.getShoesId() }"/>&brandId=<c:out value="${brand.getBrandId() }"/>"><button
-											type="button" class="btn btn-primary">Update</button></a></td>
-
-								<td><a
-									href="ShoesTableController.do?action=delete&shoesId=<c:out value="${shoes.getShoesId() }"/>&brandId=<c:out value="${brand.getBrandId() }"/>"
-									class="confirm"><button type="button"
-											class="btn btn-danger">Delete</button></a></td>
-
-							</tr>
-						</c:forEach>
+						<!-- -->
 					</tbody>
 				</table>
 			</div>
 		</div>
 		<div class="row">
 			<p class="col-md-offset-2 col-md-2">
-				<a
+				<button type="button" class="btn btn-success" name="create">Add
+					Shoes to Brand</button>
+				<!-- <a
 					href="ShoesTableController.do?action=insert&brandId=<c:out value="${brand.getBrandId() }"/>"><button
-						type="button" class="btn btn-success">Add Shoes to Brand</button></a>
+						type="button" class="btn btn-success">Add Shoes to Brand</button></a> -->
 			</p>
 			<p class="col-md-2">
 				<a href="BrandTableController.do?action=list"><button
@@ -74,9 +64,10 @@
 			</p>
 		</div>
 	</div>
-	<script type="text/javascript" src="js/ConfirmDelete.js"
-		charset="utf-8">
-		
-	</script>
+
+
+	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
+	<script type="text/javascript" src="js/AjaxController.js"></script>
+	<script type="text/javascript" src="js/DomBuilder.js"></script>
 </body>
 </html>

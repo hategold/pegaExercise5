@@ -65,7 +65,6 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		} else {
 			generalService.update(entity);
 		}
-
 		entity.setForeignClassNull();
 		responseJson(response, new Gson().toJson(entity));
 	}
@@ -97,34 +96,34 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		return entity;
 	}
 
-	public T buildEntityByReq(HttpServletRequest request) {
-		T entity = null;
-		try {
-			entity = classType.newInstance();
-		} catch (InstantiationException | IllegalAccessException e1) {
-			e1.printStackTrace();
-		}
-		Field[] fields = classType.getDeclaredFields();
+//	public T buildEntityByReq(HttpServletRequest request) {
+//		T entity = null;
+//		try {
+//			entity = classType.newInstance();
+//		} catch (InstantiationException | IllegalAccessException e1) {
+//			e1.printStackTrace();
+//		}
+//		Field[] fields = classType.getDeclaredFields();
+//
+//		for (Field field : fields) {
+//			try {
+//				if (field.getType().equals(String.class)) {//TODO stringUtils?
+//					field.setAccessible(true);
+//					field.set(entity, request.getParameter(field.getName()));
+//				} else if (field.getType().equals(int.class)) {
+//					field.setAccessible(true);
+//					field.set(entity, Integer.valueOf(request.getParameter(field.getName())));
+//				}
+//
+//			} catch (IllegalArgumentException | IllegalAccessException e) {
+//				e.printStackTrace();
+//				System.out.println(field.getName());
+//			}
+//		}
+//		return entity;
+//	}
 
-		for (Field field : fields) {
-			try {
-				if (field.getType().equals(String.class)) {//TODO stringUtils?
-					field.setAccessible(true);
-					field.set(entity, request.getParameter(field.getName()));
-				} else if (field.getType().equals(int.class)) {
-					field.setAccessible(true);
-					field.set(entity, Integer.valueOf(request.getParameter(field.getName())));
-				}
-
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-				System.out.println(field.getName());
-			}
-		}
-		return entity;
-	}
-
-	public String buildJsonDataList() {
+	public String buildJsonDataList(HttpServletRequest request) {
 		List<T> objList = generalService.findAll();
 		for (T obj : objList) {
 			obj.setForeignClassNull();
@@ -132,11 +131,11 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		return new Gson().toJson(objList);
 	}
 
-	public String dispatchToUpdate(HttpServletRequest request, T entity) {
-		if (entity != null)
-			request.setAttribute(entity.getClass().getSimpleName().toLowerCase(), entity);
-		return INSERT_OR_EDIT_PAGE;
-	};
+//	public String dispatchToUpdate(HttpServletRequest request, T entity) {
+//		if (entity != null)
+//			request.setAttribute(entity.getClass().getSimpleName().toLowerCase(), entity);
+//		return INSERT_OR_EDIT_PAGE;
+//	};
 
 	protected void responseJson(HttpServletResponse response, String json) {
 		response.setContentType("application/json");
@@ -154,17 +153,17 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 			switch (ActionEnum.valueOf(action.toUpperCase())) {
 				case DELETE:
 					generalService.deleteById(parsePkFromReq(request));
-					return buildJsonDataList();
-				case EDIT:
-
-					T entity = generalService.getById(parsePkFromReq(request));
-
-					if (entity == null) //got no data
-						return buildJsonDataList();
-
-					return dispatchToUpdate(request, entity);
-				case INSERT:
-					return dispatchToUpdate(request, null);
+					return buildJsonDataList(request);
+//				case EDIT:
+//
+//					T entity = generalService.getById(parsePkFromReq(request));
+//
+//					if (entity == null) //got no data
+//						return buildJsonDataList(request);
+//
+//					return dispatchToUpdate(request, entity);
+//				case INSERT:
+//					return dispatchToUpdate(request, null);
 				case INDEX:
 					return LIST_PAGE;
 				default:
@@ -173,12 +172,12 @@ public abstract class AbstractTableController<T extends EntityInterface, PK exte
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		return buildJsonDataList();
+		return buildJsonDataList(request);
 	}
 
-	public String buildListUrl(HttpServletRequest request) throws IOException {
-		return "/MavenWebExercise5/" + this.getClass().getSimpleName() + "?action=list";
-	}
+//	public String buildListUrl(HttpServletRequest request) throws IOException {
+//		return "/MavenWebExercise5/" + this.getClass().getSimpleName() + "?action=list";
+//	}
 
 	private boolean isCreate(int id) {
 		return id == 0;
