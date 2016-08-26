@@ -6,13 +6,31 @@ var domBuilder = {
 	tableServlet : "",
 	superEntityString : "",
 	superEntityParm : {},
+	entityConstructor : function() {
+	},
+	buildTableHead : function(colAttribute) {
+		var tr = $('<tr>');
+
+		$.each(colAttribute, function(index, attrName) {
+					var firstUpperCaseName = attrName[0].toUpperCase()
+							+ attrName.substring(1);
+					var tHead = $('<th>').text(firstUpperCaseName);
+					tHead.appendTo(tr);
+				})
+		$(document).trigger('buidedTableHead', {
+					'tr' : tr
+				})
+	},
 	buildTableByAjax : function(responseJson) {
-		console.log('ajax ~~~~');
+
 		var that = this;
 		var tAttr = this.tableAttributeName;
 		var tName = this.tableName;
+		var tHeadSelector = $("#" + tName + " thead");
 		var tBodySelector = $("#" + tName + " tbody");
-		tBodySelector.children().replaceWith("");
+		tBodySelector.children().remove();
+		console.log(responseJson.length);
+		cc = responseJson;
 		$.each(responseJson, function(index, record) {
 
 					tBodySelector
@@ -41,7 +59,7 @@ var domBuilder = {
 	createNewRowForm : function(rowMap, tableName) {
 		$("#" + tableName + " tr:last").after("<tr></tr>");
 		var targetTr = $("#" + tableName + " tr:last");
-		rowMap.forEach(function(item, key) {
+		$.each(rowMap, function(item, key) {
 
 					targetTr.append("<td><" + item.tag
 							+ (item.type ? " type=\"" + item.type + "\"" : "")
@@ -64,7 +82,7 @@ var domBuilder = {
 
 	},
 	updateNewRowForm : function(rowMap, rowSelector) {
-
+		rowSelector = rowSelector.closest('tr');
 		rowSelector.hide();
 		var attributeArray = this.tableAttributeName;
 		var targetTr = $("<tr>");
@@ -72,15 +90,15 @@ var domBuilder = {
 		var i;
 		for (i = 0; i < attributeArray.length; i++) {
 			var key = attributeArray[i];
-			var item = rowMap.get(key);
+			var item = rowMap[key];
 			var tmpTd = $("<td>");
-			var tmpTag = $("<" + item.tag + ">");
-			tmpTag.attr("type", item.input).attr("name", key).attr("class",
+			var tmpTag = $("<" + item.colTag + ">");
+			tmpTag.attr("type", item.colType).attr("name", key).attr("class",
 					"form-control").appendTo(tmpTd);
 
 			item.otherAttribute ? tmpTag.prop(item.otherAttribute, true) : "";
 
-			if (item.tag == "select") {
+			if (item.colTag == "select") {
 				if (!pageVariable[key + 'Map']) {
 					buildOptionsByAjax(key, tmpTag);
 				} else {
@@ -136,6 +154,14 @@ var domBuilder = {
 				.substring(1));
 		this.superEntityParm['idName'] = this.superEntityString.split('=')[0];
 		this.superEntityParm['idValue'] = this.superEntityString.split('=')[1];
+	},
+	deleteSelectRow : function(selector) {
+		selector.closest('tr').remove();
+	},
+	deleteSelectDom : function(selector) {
+		selector.remove();
+	},
+	initializeListener : function() {
 	}
 }
 
@@ -187,3 +213,5 @@ function appendSubTableBtn(element, idName, idValue) {
 
 var inputOkButton = '<td><button type="button" class="btn btn-primary inputOk" name="inputOk" type="submit">OK</button></td>';
 var inputCancelButton = '<td><button type="button" class="btn btn-default inputCancel" name="inputCancel">Cancel</button></td>';
+
+var domBuilEventListener = {}

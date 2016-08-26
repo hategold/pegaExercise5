@@ -69,7 +69,7 @@
 	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
 	<script type="text/javascript" src="js/AjaxController.js"></script>
 	<script type="text/javascript" src="js/DomBuilder.js"></script>
-
+	<script type="text/javascript" src="js/jsModel/Brand.js"></script>
 
 </body>
 

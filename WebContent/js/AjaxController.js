@@ -1,7 +1,7 @@
 var ajaxUtil = {
 	name : "ajaxUtil",
 	makeAjaxRequest : function(url, requestData, callbackEntity = {},
-			callbackFunction, type, errorCallback ) {// set default
+			callbackFunction, type, errorCallback) {// set default
 		var responseJson
 		$.ajax({
 					url : url,

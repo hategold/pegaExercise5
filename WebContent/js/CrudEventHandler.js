@@ -14,7 +14,7 @@ $(document).on("click", "button[name=\"delete\"]", function(e) {
 				callback : function(result) {
 					if (result) {
 						ajaxUtil.makeAjaxRequest(url, null, {}, function() {
-									thisSelector.closest("tr").replaceWith("");
+									domBuilder.deleteSelectRow(thisSelector);
 								})
 					}
 				},
@@ -25,63 +25,33 @@ $(document).on("click", "button[name=\"delete\"]", function(e) {
 
 $(document).on("click", "button[name=\"update\"]", function(e) {
 	e.preventDefault();
-
-	var colNameTypeMap = new Map();
-	$("#" + domBuilder.tableName + " tr:first").children().each(function() {
-				var targetEntity = $(this).find("div");
-				var key = targetEntity.attr("colName");
-				if (key != undefined) {
-					colNameTypeMap.set(key, {
-								tag : targetEntity.attr("colTag"),
-								input : targetEntity.attr("colType"),
-								otherAttribute : targetEntity
-										.attr("otherAttribute")
-							});
-				}
-
-			});
-	// console.log(colNameTypeMap);
-	domBuilder.updateNewRowForm(colNameTypeMap, $(this).closest("tr"));
-	var url = $(this).closest("href");
+	domBuilder.updateNewRowForm(Brand.prototype.inputColAttributeMap, $(this)
+					.closest("tr"));
 
 })
 $(document).on("click", "button[name=\"create\"]", function(e) {
 	e.preventDefault();
-	var colNameTypeMap = new Map();
-	$("#" + domBuilder.tableName + " tr:first").children().each(function() {
-				var targetEntity = $(this).find("div");
-				var key = targetEntity.attr("colName");
-				if (key != undefined) {
-					colNameTypeMap.set(key, {
-								tag : targetEntity.attr("colTag"),
-								input : targetEntity.attr("colType"),
-								otherAttribute : targetEntity
-										.attr("otherAttribute")
-							});
-				}
-
-			});
-	domBuilder.createNewRowForm(colNameTypeMap, domBuilder.tableName);
-	var url = $(this).closest("href");
+	domBuilder.createNewRowForm(Brand.prototype.inputColAttributeMap,
+			domBuilder.tableName);
 
 })
 
 $(document).ready(function() {
-	domBuilder.tableServlet = $('table').attr('servlet');
+	domBuilder.tableServlet = Brand.prototype.entityServlet;
 	domBuilder.initSuperEntityString();
 	var url = domBuilder.tableServlet + '.do?action=list&'
 			+ domBuilder.superEntityString;
 	domBuilder.tableName = $('table').attr('id');
-	domBuilder.tableAttributeName = Array.from($('th').find('div').map(
-			function() {
-				return $(this).attr('colName')
-			}));
+	domBuilder.tableAttributeName = Brand.prototype.colAttribute;
+	domBuilder.entityConstructor = Brand;
+	domBuilder.buildTableHead(Brand.prototype.colAttribute);
 	ajaxUtil
 			.makeAjaxRequest(url, null, domBuilder, domBuilder.buildTableByAjax);
 
 })
 
 $(document).on("click", "button[name=\"inputOk\"]", function(e) {
+	console.log(e);
 	var postMap = {};
 	var trSelector = $(this).closest("tr");
 	trSelector.find("input,select").map(function() {
@@ -100,5 +70,5 @@ $(document).on("click", "button[name=\"inputOk\"]", function(e) {
 
 $(document).on("click", "button[name=\"inputCancel\"]", function(e) {
 			$("#" + $(this).attr("target")).show();
-			$(this).closest("tr").replaceWith("");
+			$(this).closest("tr").remove();
 		});

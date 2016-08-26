@@ -1,6 +1,5 @@
 package yt.item5;
 
-//import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -25,12 +24,6 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 		return checkString2Int(request.getParameter("shoesId"));
 	}
 
-//	@Override
-//	public Shoes buildEntityByReq(HttpServletRequest request) {
-//		return super.buildEntityByReq(request).setBrand(generalService.buildFkEntity(Integer.valueOf(request.getParameter("brandId"))));
-//
-//	}
-
 	@Override
 	public Shoes buildEntityByJson(JsonObject jsonData) {
 		Shoes entity = super.buildEntityByJson(jsonData).setBrand(generalService.buildFkEntity(Integer.valueOf(jsonData.get("brandId").getAsString())));
@@ -39,16 +32,6 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 		}
 		return entity;
 	}
-
-//	@Override
-//	public String dispatchToUpdate(HttpServletRequest request, Shoes shoes) {
-//		shoes = generalService.processUpdate(shoes, Integer.valueOf(request.getParameter("brandId")));
-//		if (shoes == null)
-//			return buildJsonDataList(request);
-//
-//		request.setAttribute("brand", shoes.getBrand());
-//		return super.dispatchToUpdate(request, shoes);
-//	}
 
 	@Override
 	public String buildJsonDataList(HttpServletRequest request) {
@@ -61,10 +44,5 @@ public class ShoesTableController extends AbstractTableController<Shoes, Integer
 		}
 		return new Gson().toJson(ShoesList);
 	}
-
-//	@Override
-//	public String buildListUrl(HttpServletRequest request) throws IOException {
-//		return super.buildListUrl(request) + "&brandId=" + request.getParameter("brandId");
-//	}
 
 }
