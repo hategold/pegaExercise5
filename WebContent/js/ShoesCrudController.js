@@ -20,30 +20,30 @@ $(document).on("click", "button[name=\"delete\"]", function(e) {
 
 $(document).on("click", "button[name=\"update\"]", function(e) {
 			e.preventDefault();
-			domBuilder.updateNewRowForm(Brand.prototype.inputColAttributeMap,
+			domBuilder.updateNewRowForm(Shoes.prototype.inputColAttributeMap,
 					$(this).closest("tr"));
 
 		})
 $(document).on("click", "button[name=\"create\"]", function(e) {
 	e.preventDefault();
-	domBuilder.createNewRowForm(Brand.prototype.inputColAttributeMap);
+	domBuilder.createNewRowForm(Shoes.prototype.inputColAttributeMap);
 
 })
 
 $(document).ready(function() {
-	domBuilder.tableServlet = Brand.prototype.entityServlet;
+	domBuilder.tableServlet = Shoes.prototype.entityServlet;
 	domBuilder.initSuperEntityString();
 	domBuilder.tableName = $('table').attr('id');
-	domBuilder.tableAttributeName = Brand.prototype.colAttribute;
-	domBuilder.initializeListener(Brand);
+	domBuilder.tableAttributeName = Shoes.prototype.colAttribute;
+	domBuilder.initializeListener(Shoes);
 
-	var brandBuilder = new entityModelBuilder(Brand)
-	var url = Brand.prototype.entityServlet + '.do?action=list&'
+	var shoesBuilder = new entityModelBuilder(Shoes)
+	var url = Shoes.prototype.entityServlet + '.do?action=list&'
 			+ domBuilder.superEntityString;
 
 	initReferrenceListener();
-	domBuilder.buildTableHead(Brand.prototype.colAttribute);
-	ajaxUtil.makeAjaxRequest(url, null, brandBuilder, brandBuilder.buildByJson);
+	domBuilder.buildTableHead(Shoes.prototype.colAttribute);
+	ajaxUtil.makeAjaxRequest(url, null, shoesBuilder, shoesBuilder.buildByJson);
 
 })
 
@@ -81,7 +81,7 @@ $(document).on("click", "button[name=\"inputOk\"]", function(e) {//TODO check th
 
 	postModel[domBuilder.superEntityParm['idName']] = domBuilder.superEntityParm['idValue']
 
-	ajaxUtil.makeAjaxRequest(Brand.prototype.entityServlet,
+	ajaxUtil.makeAjaxRequest(Shoes.prototype.entityServlet,
 			JSON.stringify(postModel), domBuilder, function(response) {
 				domBuilder.formToEntity(trSelector, response);
 			}, "POST", function(response) {

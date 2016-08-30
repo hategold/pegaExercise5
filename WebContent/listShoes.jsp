@@ -33,7 +33,7 @@
 				<table class="table table-bordered" id="shoesTable"
 					servlet="ShoesTableController">
 					<thead>
-						<tr>
+						<!--  <tr>
 							<th><div colTag="input" colType="text" colName="shoesId"
 									otherAttribute="readonly">ShoesId</div></th>
 							<th><div colTag="input" colType="text" colName="shoesName"
@@ -42,7 +42,7 @@
 							<th><div colTag="input" colType="text" colName="category">Category</div></th>
 							<th><div colTag="input" colType="number" colName="price">Price</div></th>
 							<th colspan="2">Action</th>
-						</tr>
+						</tr>-->
 					</thead>
 					<tbody>
 						<!-- -->
@@ -66,8 +66,11 @@
 	</div>
 
 
-	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
-	<script type="text/javascript" src="js/AjaxController.js"></script>
+	<script type="text/javascript" src="js/ShoesCrudController.js"></script>
+	<script type="text/javascript" src="js/jsModel/Shoes.js"></script>
+	<script type="text/javascript" src="js/AjaxUtil.js"></script>
 	<script type="text/javascript" src="js/DomBuilder.js"></script>
+	<script type="text/javascript" src="js/EntityModelBuilder.js"></script>
+	<script type="text/javascript" src="js/jsModel/Brand.js"></script>
 </body>
 </html>

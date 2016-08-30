@@ -32,8 +32,8 @@
 					servlet="BrandTableController">
 					<caption>ShoesBrands</caption>
 					<thead>
-						<tr>
-							<!-- colTag & otherAttribute is label for js dom control. -->
+						<!--<tr>
+							
 							<th><div colTag="input" colType="text" colName="brandId"
 									otherAttribute="readonly">BrandId</div></th>
 							<th><div colTag="input" colType="text" colName="brandName"
@@ -41,7 +41,8 @@
 							<th><div colTag="input" colType="text" colName="website">Website</div></th>
 							<th><div colTag="select" colName="country">Country</div></th>
 							<th colspan="3">Action</th>
-						</tr>
+						</tr>-->
+						<!-- colTag & otherAttribute is label for js dom control. -->
 					</thead>
 					<tbody>
 						<!-- insert Js table 
@@ -67,9 +68,11 @@
 	</div>
 
 	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
-	<script type="text/javascript" src="js/AjaxController.js"></script>
+	<script type="text/javascript" src="js/AjaxUtil.js"></script>
 	<script type="text/javascript" src="js/DomBuilder.js"></script>
 	<script type="text/javascript" src="js/jsModel/Brand.js"></script>
+	<script type="text/javascript" src="js/EntityModelBuilder.js"></script>
+	
 
 </body>
 
