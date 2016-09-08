@@ -19,6 +19,10 @@
 		<servlet-name>BrandTableController</servlet-name>
 		<url-pattern>/BrandTableController.do</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>BrandTableController</servlet-name>
+		<url-pattern>/Brand</url-pattern>
+	</servlet-mapping>
 	
 	<servlet>
 		<servlet-name>ShoesTableController</servlet-name>
@@ -28,6 +32,10 @@
 	<servlet-mapping>
 		<servlet-name>ShoesTableController</servlet-name>
 		<url-pattern>/ShoesTableController.do</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ShoesTableController</servlet-name>
+		<url-pattern>/Shoes</url-pattern>
 	</servlet-mapping>
 	<!--
 		<servlet>
@@ -52,19 +60,19 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<!--
-		<filter>
-			<filter-name>OpenSessionInViewFilter</filter-name>
-			<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
-			<init-param>
-				<param-name>sessionFactory</param-name>
-				<param-value>sessionFactory</param-value>
-			</init-param>
-		</filter>
-		<filter-mapping>
-			<filter-name>OpenSessionInViewFilter</filter-name>
-			<url-pattern>/*</url-pattern>
-		</filter-mapping>
-	-->
+			<filter>
+				<filter-name>OpenSessionInViewFilter</filter-name>
+				<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+				<init-param>
+					<param-name>sessionFactory</param-name>
+					<param-value>sessionFactory</param-value>
+				</init-param>
+			</filter>
+			<filter-mapping>
+				<filter-name>OpenSessionInViewFilter</filter-name>
+				<url-pattern>/*</url-pattern>
+			</filter-mapping>
+		-->
   
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

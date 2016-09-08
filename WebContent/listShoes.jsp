@@ -59,7 +59,7 @@
 						type="button" class="btn btn-success">Add Shoes to Brand</button></a> -->
 			</p>
 			<p class="col-md-2">
-				<a href="BrandTableController.do?action=list"><button
+				<a href="index.jsp"><button
 						type="button" class="btn btn-primary">Back to Brands List</button></a>
 			</p>
 		</div>
