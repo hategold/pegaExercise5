@@ -1,79 +1,69 @@
-function Brand() {
-	var brandId, brandName, website, country;
-	var shoesGroup = new Array();
+var BrandModel = {
 
-	this.setBrandId = function(param) {
-		brandId = param;
-		return this;
-	}
-	this.setBrandName = function(param) {
-		brandName = param;
-		return this;
-	}
-	this.setWebsite = function(param) {
-		website = param;
-		return this;
-	}
-	this.setCountry = function(param) {
-		country = param;
-		return this;
-	}
-	this.setAttributeByObj = function(obj) {
-		brandId = obj['brandId'];
-		brandName = obj['brandName'];
-		website = obj['website'];
-		country = obj['country'];
-		return this;
-	}
-	this.getAttributes = function() {
-		return {
-			'brandId' : brandId,
-			'brandName' : brandName,
-			'website' : website,
-			'country' : country
-		};
-	}
-	this.getBrandId = function() {
-		return brandId;
-	}
-	this.getBrandName = function() {
-		return brandName;
-	}
-	this.getWebsite = function() {
-		return website;
-	}
-	this.getCountry = function() {
-		return country;
-	}
-};
+	modelName : 'Brand',
+	idProperty : 'brandId',
+	fields : [ {
+		name : 'brandId',
+		editable : false,
+		type : 'int'
+	},
+		{
+			name : 'brandName',
+			editable : true,
+			type : 'string'
+		},
+		{
+			name : 'website',
+			editable : true,
+			type : 'string'
+		},
+		{
+			name : 'country',
+			editable : true,
+			type : 'string'
+		} ],
+	validator : {
+		presense : [ 'brandId' ]
+	},
+	api : {
+		read : 'BrandTableController?action=list',
+		update : 'BrandTableController',
+		create : 'BrandTableController',
+		destroy : 'BrandTableController?action=delete'
+	},
+	actionMethods : {
+		read : 'GET',
+		update : 'POST',
+		create : 'POST',
+		destroy : 'GET'
+	},
 
-Brand.prototype = (function() {
+	entityBuilder : entityModelBuilder(BrandModel)
+}
 
-	return {
-		colAttribute : [ 'brandId',
-			'brandName',
-			'website',
-			'country' ],
-		entityServlet : 'BrandTableController',
-		inputColAttributeMap : {
-			brandId : {
-				colTag : 'input',
-				colType : 'text',
-				otherAttribute : 'readOnly'
-			},
-			brandName : {
-				colTag : 'input',
-				colType : 'text',
-				otherAttribute : 'requierd'
-			},
-			website : {
-				colTag : 'input',
-				colType : 'text'
-			},
-			country : {
-				colTag : 'select'
-			}
-		}
-
-	}
-}());
+// Brand.prototype = (function() {
+//
+// return {
+//		
+// inputColAttributeMap : {
+// brandId : {
+// colTag : 'input',
+// colType : 'text',
+// otherAttribute : 'readOnly'
+// },
+// brandName : {
+// colTag : 'input',
+// colType : 'text',
+// otherAttribute : 'requierd'
+// },
+// website : {
+// colTag : 'input',
+// colType : 'text'
+// },
+// country : {
+// colTag : 'select'
+// }
+// }
+//
+// }
+// }());

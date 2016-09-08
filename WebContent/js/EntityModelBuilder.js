@@ -1,10 +1,18 @@
+// var checkJQ = function() {
+// if (!window.jQuery) {
+// throw new Error("LikeButtonModule requires jQuery")
+// }
+// }();
+
 var entityModelBuilder = function(model) {
 	this.modelName = model.name;
-	this.modelConstructor = model;
 
 	this.buildEntityByJson = function(json) {
-		entity = new this.modelConstructor();
-		return entity.setAttributeByObj(json);
+		var entity
+		model.fields.forEach(function(element) {
+					entity[element.name] = json[element.name];
+				})
+		return entity;
 	};
 	this.buildListByJson = function(jsonList) {
 		var entityList = new Array();
@@ -19,13 +27,13 @@ var entityModelBuilder = function(model) {
 	this.buildByJson = function(json) {
 
 		if (json.length) {
-			var eventData = this.buildListByJson(json);
-			$(document).trigger(this.modelName + 'ListBuilded', [eventData]);
+			var listData = this.buildListByJson(json);
+			$(document).trigger(this.modelName + 'ListBuilded', [listData]);
 
 		} else {
 
-			var eventData = this.buildEntityByJson(json);
-			$(document).trigger(this.modelName + 'Builded', [eventData]);
+			var entityData = this.buildEntityByJson(json);
+			$(document).trigger(this.modelName + 'Builded', [entityData]);
 		}
 
 	}

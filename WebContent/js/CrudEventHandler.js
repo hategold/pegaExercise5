@@ -1,3 +1,5 @@
+var dataStore;
+
 $(document).on("click", "button[name=\"delete\"]", function(e) {
 			e.preventDefault();
 			var thisSelector = $(this);
