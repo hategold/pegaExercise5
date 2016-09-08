@@ -184,7 +184,7 @@ var domBuilder = {
 }
 
 function buildOptionsByGlobalVar(mapName, selector) {
-	setOptionsByJson(pageVariable[mapName + "Map"], selector);
+	setOptionsByJson(pageVariable[mapName + "Map"], selector);//options
 }
 
 function buildOptionsByAjax(mapName, selector) {

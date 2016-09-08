@@ -1,4 +1,4 @@
-var dataStore;
+var dataStore = {};
 
 $(document).on("click", "button[name=\"delete\"]", function(e) {
 			e.preventDefault();
@@ -21,16 +21,16 @@ $(document).on("click", "button[name=\"delete\"]", function(e) {
 		})
 
 $(document).on("click", "button[name=\"update\"]", function(e) {
-			e.preventDefault();
-			domBuilder.updateNewRowForm(Brand.prototype.inputColAttributeMap,
-					$(this).closest("tr"));
-
-		})
-$(document).on("click", "button[name=\"create\"]", function(e) {
 	e.preventDefault();
-	domBuilder.createNewRowForm(Brand.prototype.inputColAttributeMap);
+	domBuilder.updateNewRowForm(Brand.prototype.inputColAttributeMap, $(this)
+					.closest("tr"));
 
 })
+$(document).on("click", "button[name=\"create\"]", function(e) {
+			e.preventDefault();
+			domBuilder.createNewRowForm(Brand.prototype.inputColAttributeMap);
+
+		})
 
 $(document).ready(function() {
 	domBuilder.tableServlet = Brand.prototype.entityServlet;
@@ -74,22 +74,26 @@ function initReferrenceListener() {
 			})
 }
 
-$(document).on("click", "button[name=\"inputOk\"]", function(e) {//TODO check this part!
-	var postModel = {};// = new Brand();
-	var trSelector = $(this).closest("tr");
-	trSelector.find("input,select").map(function() {
-				postModel[$(this).attr("name")] = $(this).val();
-			});
+$(document).on("click", "button[name=\"inputOk\"]", function(e) {// TODO
+																	// check
+																	// this
+																	// part!
+			var postModel = {};// = new Brand();
+			var trSelector = $(this).closest("tr");
+			trSelector.find("input,select").map(function() {
+						postModel[$(this).attr("name")] = $(this).val();
+					});
 
-	postModel[domBuilder.superEntityParm['idName']] = domBuilder.superEntityParm['idValue']
+			postModel[domBuilder.superEntityParm['idName']] = domBuilder.superEntityParm['idValue']
 
-	ajaxUtil.makeAjaxRequest(Brand.prototype.entityServlet,
-			JSON.stringify(postModel), domBuilder, function(response) {
-				domBuilder.formToEntity(trSelector, response);
-			}, "POST", function(response) {
-				domBuilder.deleteSelectRow(trSelector);
-			})
-});
+			ajaxUtil.makeAjaxRequest(Brand.prototype.entityServlet, JSON
+							.stringify(postModel), domBuilder, function(
+							response) {
+						domBuilder.formToEntity(trSelector, response);
+					}, "POST", function(response) {
+						domBuilder.deleteSelectRow(trSelector);
+					})
+		});
 
 $(document).on("click", "button[name=\"inputCancel\"]", function(e) {
 			$("#" + $(this).attr("target")).show();
