@@ -1,6 +1,6 @@
 var dataStore = {};
 var tView = tableView(tableViewConfig, domBuilder);
-var store;// id:model
+var store = {};// id:model
 
 $(document).on("click", "button[name=\"delete\"]", function(e) {
 			e.preventDefault();
@@ -91,7 +91,7 @@ $(document).on("click", "button[name=\"inputOk\"]", function(e) {// TODO
 			ajaxUtil.makeAjaxRequest(BrandModel.api.update, JSON
 							.stringify(postModel), domBuilder, function(
 							response) {
-						delete stroe[response['brandId']];
+//						delete stroe[response['brandId']];
 						tView.formToEntity(trSelector, response);
 					}, "POST", function(response) {
 						tView.deleteSelectRow(trSelector);
