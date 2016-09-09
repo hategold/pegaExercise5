@@ -2,24 +2,21 @@ var BrandModel = {
 
 	modelName : 'Brand',
 	idProperty : 'brandId',
+	associationApi : 'ShoesTableController',
 	fields : [ {
 		name : 'brandId',
-		editable : false,
 		type : 'int'
 	},
 		{
 			name : 'brandName',
-			editable : true,
 			type : 'string'
 		},
 		{
 			name : 'website',
-			editable : true,
 			type : 'string'
 		},
 		{
 			name : 'country',
-			editable : true,
 			type : 'string'
 		} ],
 	validator : {
@@ -36,10 +33,10 @@ var BrandModel = {
 		update : 'POST',
 		create : 'POST',
 		destroy : 'GET'
-	},
-
-	entityBuilder : entityModelBuilder(BrandModel)
+	}
 }
+
+BrandModel.entityBuilder = new entityModelBuilder(BrandModel);
 
 // Brand.prototype = (function() {
 //

@@ -1,4 +1,6 @@
 var dataStore = {};
+var tView = tableView(tableViewConfig, domBuilder);
+var store;// id:model
 
 $(document).on("click", "button[name=\"delete\"]", function(e) {
 			e.preventDefault();
@@ -28,74 +30,75 @@ $(document).on("click", "button[name=\"update\"]", function(e) {
 })
 $(document).on("click", "button[name=\"create\"]", function(e) {
 			e.preventDefault();
-			domBuilder.createNewRowForm(Brand.prototype.inputColAttributeMap);
+			tView.createNewRowForm();
 
 		})
 
 $(document).ready(function() {
-	domBuilder.tableServlet = Brand.prototype.entityServlet;
-	domBuilder.initSuperEntityString();
-	domBuilder.tableName = $('table').attr('id');
-	domBuilder.tableAttributeName = Brand.prototype.colAttribute;
-	domBuilder.initializeListener(Brand);
-
-	var brandBuilder = new entityModelBuilder(Brand)
-	var url = Brand.prototype.entityServlet + '.do?action=list&'
-			+ domBuilder.superEntityString;
+	var url = BrandModel.api.read;
 
 	initReferrenceListener();
-	domBuilder.buildTableHead(Brand.prototype.colAttribute);
-	ajaxUtil.makeAjaxRequest(url, null, brandBuilder, brandBuilder.buildByJson);
+
+	tView.buildTableHead();
+	ajaxUtil.makeAjaxRequest(url, null, BrandModel.entityBuilder,
+			BrandModel.entityBuilder.buildByJson);
 
 })
 
 function initReferrenceListener() {
-	$(document).on(domBuilder.tableName + 'TrBuilded', function(e, eventData) {
-				var tbSelector = $('#' + domBuilder.tableName + ' tbody');
+
+	$(document).on(BrandModel.modelName + 'TrBuilded', function(e, eventData) {
+				var tbSelector = $('#' + BrandModel.modelName + 'Table tbody');
 				$.each(eventData, function(idx) {
 							tbSelector.append(eventData[idx]);
 						})
 			});
-	$(document).on(domBuilder.tableName + 'ThBuilded', function(e, eventData) {
-				var thSelector = $('#' + domBuilder.tableName + ' thead');
+	$(document).on(BrandModel.modelName + 'ThBuilded', function(e, eventData) {
+				var thSelector = $('#' + BrandModel.modelName + 'Table thead');
 				thSelector.children().remove();
 				thSelector.append(eventData.tr);
 			})
 
-	$(document).on(domBuilder.tableName + 'UpdateRowForm',
+	$(document).on(BrandModel.modelName + 'UpdateRowForm',
 			function(e, eventData) {
 				var idSelector = eventData.target;
 				idSelector.after(eventData.tr);
 			})
 
-	$(document).on(domBuilder.tableName + 'CreateRowForm', function(e, trForm) {
-				var tbSelector = $('#' + domBuilder.tableName + ' tbody');
+	$(document).on(BrandModel.modelName + 'CreateRowForm', function(e, trForm) {
+				var tbSelector = $('#' + BrandModel.modelName + 'Table tbody');
 				tbSelector.append(trForm);
 			})
+	$(document).on(BrandModel.modelName + 'ListBuilded',
+			function(event, eventData) {
+				tView.buildTableByArray(eventData);
+			});
+	// $(document).on(model.name + 'Builded', function(event, eventData) {
+	// });
 }
 
 $(document).on("click", "button[name=\"inputOk\"]", function(e) {// TODO
-																	// check
-																	// this
-																	// part!
+
 			var postModel = {};// = new Brand();
 			var trSelector = $(this).closest("tr");
 			trSelector.find("input,select").map(function() {
-						postModel[$(this).attr("name")] = $(this).val();
+						postModel[$(this).attr("dataindex")] = $(this).val();
 					});
 
-			postModel[domBuilder.superEntityParm['idName']] = domBuilder.superEntityParm['idValue']
+			// postModel[domBuilder.superEntityParm['idName']] =
+			// domBuilder.superEntityParm['idValue']
 
-			ajaxUtil.makeAjaxRequest(Brand.prototype.entityServlet, JSON
+			ajaxUtil.makeAjaxRequest(BrandModel.api.update, JSON
 							.stringify(postModel), domBuilder, function(
 							response) {
-						domBuilder.formToEntity(trSelector, response);
+						delete stroe[response['brandId']];
+						tView.formToEntity(trSelector, response);
 					}, "POST", function(response) {
-						domBuilder.deleteSelectRow(trSelector);
+						tView.deleteSelectRow(trSelector);
 					})
 		});
 
 $(document).on("click", "button[name=\"inputCancel\"]", function(e) {
-			$("#" + $(this).attr("target")).show();
-			dombuilde.deleteSelectRow($(this));
+			// $("#" + $(this).attr("target")).show();
+			tView.deleteSelectRow($(this));
 		});

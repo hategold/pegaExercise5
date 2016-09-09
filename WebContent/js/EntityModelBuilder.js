@@ -5,10 +5,10 @@
 // }();
 
 var entityModelBuilder = function(model) {
-	this.modelName = model.name;
+	this.modelName = model.modelName;
 
 	this.buildEntityByJson = function(json) {
-		var entity
+		var entity = {};
 		model.fields.forEach(function(element) {
 					entity[element.name] = json[element.name];
 				})
@@ -25,7 +25,7 @@ var entityModelBuilder = function(model) {
 	};
 
 	this.buildByJson = function(json) {
-
+		
 		if (json.length) {
 			var listData = this.buildListByJson(json);
 			$(document).trigger(this.modelName + 'ListBuilded', [listData]);
@@ -36,5 +36,9 @@ var entityModelBuilder = function(model) {
 			$(document).trigger(this.modelName + 'Builded', [entityData]);
 		}
 
+	}
+
+	this.buildEntityByTr = function(selector, colFields) {
+		// colFields
 	}
 }

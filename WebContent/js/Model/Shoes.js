@@ -2,6 +2,7 @@ var ShoesModel = {
 
 	modelName : 'Shoes',
 	idProperty : 'shoesId',
+	associationApi : 'BrandTableController',
 	fields : [{
 				name : 'shoesId',
 				editable : false,

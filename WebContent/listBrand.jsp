@@ -28,7 +28,7 @@
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<table class="table table-bordered" id="brandTable"
+				<table class="table table-bordered" id="BrandTable"
 					servlet="BrandTableController">
 					<caption>ShoesBrands</caption>
 					<thead>
@@ -67,11 +67,14 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
+	
 	<script type="text/javascript" src="js/AjaxUtil.js"></script>
 	<script type="text/javascript" src="js/DomBuilder.js"></script>
-	<script type="text/javascript" src="js/jsModel/Brand.js"></script>
-	<script type="text/javascript" src="js/EntityModelBuilder.js"></script>
+		<script type="text/javascript" src="js/EntityModelBuilder.js"></script>
+	<script type="text/javascript" src="js/Model/Brand.js"></script>
+	<script type="text/javascript" src="js/TableView.js"></script>
+	<script type="text/javascript" src="js/CrudEventHandler.js"></script>
+
 	
 
 </body>
